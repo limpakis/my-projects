@@ -42,6 +42,5 @@ This program reads a file containing city-to-city distances and determines a pat
 ---
 
 ### **Limitations:**  
-⚠️ **Not guaranteed to find the shortest possible route** (not an optimal TSP solver).  
 ⚠️ **Maximum of 64 cities** due to predefined array sizes.  
 ⚠️ **Disconnected cities will cause an error** (i.e., no path between them).
