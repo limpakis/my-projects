@@ -1,1 +1,1 @@
-# my-projects
+A collection of my personal projects, including coding exercises, small applications, and experimental scripts. This repository serves as a central hub for my development work, showcasing various programming languages and technologies
