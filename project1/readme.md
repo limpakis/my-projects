@@ -1,75 +1,34 @@
-# Περιγραφή Προγράμματος 
+## Moving Average Calculator
 
-Υπολογισμός του Απλού Κινητού Μέσου Όρου (SMA) από μια λίστα αριθμών που είναι αποθηκευμένοι σε ένα αρχείο κειμένου. Ο SMA είναι ο μέσος όρος μιας ομάδας αριθμών μέσα σε ένα καθορισμένο "παράθυρο". Το μέγεθος αυτού του παραθύρου μπορεί να ρυθμιστεί από τον χρήστη, με προεπιλεγμένη τιμή το 50.
+This C program computes the **moving average** of the last `N` numbers from a file containing numerical data.
 
-## Πώς να Χρησιμοποιήσετε το Πρόγραμμα
+### Features
+- Reads numerical values from a given file.
+- Dynamically allocates memory to store the values.
+- Computes the moving average over a specified window size (`N`).
+- Default window size: **50** (can be modified via `--window N`).
+- Handles errors gracefully (invalid arguments, file access issues, memory allocation failures, etc.).
 
+### Usage
 ```bash
-./future <filename> [--window N (προεπιλογή: 50)]
+./future <filename> [--window N]
 ```
+- `<filename>`: Path to the input file containing numerical data.
+- `--window N`: (Optional) Set a custom window size `N`.
 
-### Παράμετροι
-1. `<filename>`: Το όνομα του αρχείου που περιέχει τους αριθμούς (ένας αριθμός ανά γραμμή ή διαχωρισμένοι με κενό).
-2. `--window N` (προαιρετικό): Καθορίζει το μέγεθος του παραθύρου (N) για τον SMA. Αν δεν δώσετε τιμή, το πρόγραμμα χρησιμοποιεί το 50 ως προεπιλεγμένο.
-
-## Επεξήγηση του Κώδικα
-
-### Οι Βιβλιοθήκες που Χρησιμοποιούνται
-
-- `#include <stdio.h>`: Χρησιμοποιείται για την εκτύπωση και την ανάγνωση δεδομένων.
-- `#include <stdlib.h>`: Περιέχει συναρτήσεις για διαχείριση μνήμης και μετατροπή δεδομένων.
-- `#include <string.h>`: Χρησιμοποιείται για τη σύγκριση κειμένων.
-- `#define DEFAULT_WINDOW_SIZE 50`: Ορίζει το μέγεθος παραθύρου που χρησιμοποιείται όταν δεν δίνεται άλλη τιμή.
-
-### Τι Κάνει η Κύρια Συνάρτηση (main)
-
-1. **Έλεγχος Εισόδου:**
-   - Ελέγχει αν ο αριθμός των παραμέτρων που δώσατε είναι σωστός.
-   - Εάν ο χρήστης δώσει την παράμετρο `--window`, διαβάζεται η τιμή του παραθύρου.
-
-2. **Άνοιγμα Αρχείου:**
-   - Το πρόγραμμα προσπαθεί να ανοίξει το αρχείο που περιέχει τους αριθμούς.
-   - Αν αποτύχει, εμφανίζει μήνυμα λάθους.
-
-3. **Μέτρηση Αριθμών:**
-   - Το πρόγραμμα μετράει πόσοι αριθμοί υπάρχουν στο αρχείο για να δεσμεύσει την κατάλληλη μνήμη.
-
-4. **Ανάγνωση Δεδομένων:**
-   - Διαβάζει τους αριθμούς από το αρχείο και τους αποθηκεύει σε μια λίστα (πίνακα).
-
-5. **Υπολογισμός SMA:**
-   - Καλεί τη συνάρτηση που υπολογίζει τον SMA με βάση τα δεδομένα και το μέγεθος παραθύρου.
-
-### Πώς Υπολογίζεται ο SMA (calculating_SMA)
-
-1. **Έλεγχος Παραθύρου:**
-   - Ελέγχει αν το μέγεθος παραθύρου είναι μεγαλύτερο από τα δεδομένα ή μικρότερο από 1.
-
-2. **Υπολογισμός Μέσου Όρου:**
-   - Υπολογίζει το άθροισμα των τελευταίων αριθμών, σύμφωνα με το μέγεθος παραθύρου.
-   - Διαιρεί το άθροισμα με το μέγεθος παραθύρου για να βρει τον SMA.
-
-3. **Εκτύπωση:**
-   - Εμφανίζει το αποτέλεσμα με ακρίβεια δύο δεκαδικών ψηφίων.
-
-## Πιθανά Μηνύματα Σφάλματος
-- `Usage: ./future <filename> [--window N (default: 50)]`: Όταν οι παράμετροι που δώσατε είναι λάθος.
-- `Error opening file`: Όταν το αρχείο δεν μπορεί να ανοίξει.
-- `No numbers available`: Όταν το αρχείο δεν περιέχει αριθμούς.
-- `Failed to allocate window memory`: Όταν δεν υπάρχει αρκετή μνήμη.
-- `Error reading file`: Όταν υπάρχει πρόβλημα με την ανάγνωση του αρχείου.
-- `Window too large!`: Όταν το μέγεθος παραθύρου είναι μεγαλύτερο από τα διαθέσιμα δεδομένα.
-- `Window too small!`: Όταν το μέγεθος παραθύρου είναι μικρότερο από 1.
-
-
-### Πώς να Τρέξετε το Πρόγραμμα:
-
+### Example
 ```bash
-./future <filename> [--window N (default: 50)]
+./future data.txt --window 30
 ```
+This computes the moving average of the last **30** numbers in `data.txt`.
 
-## Σημειώσεις
-- Το πρόγραμμα έχει σχεδιαστεί για να είναι αποτελεσματικό και να διαχειρίζεται σωστά τα σφάλματα.
-- Αν έχετε πολλά δεδομένα, η μνήμη διαχειρίζεται δυναμικά ώστε να μην υπάρχει πρόβλημα.
+### Error Handling
+- Displays an error if the window size is too small or too large.
+- Ensures the file is readable before processing.
+- Checks for memory allocation failures.
+
+### Output
+- Prints the moving average to **two decimal places**.
 
 ---
+✅ **Efficient & Memory-Safe Implementation**
