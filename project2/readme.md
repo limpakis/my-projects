@@ -1,37 +1,31 @@
-<<<<<<< HEAD
+## JSON Validation and Analysis Program
 
-# README: Πρόγραμμα Ελέγχου και Ανάλυσης JSON
+This program is designed to **validate JSON structure**, extract data from JSON files, and interact with an API. It provides two main functionalities:
 
-## Περιγραφή Προγράμματος
-
-Αυτό το πρόγραμμα έχει σχεδιαστεί για να ελέγχει τη δομή αρχείων JSON, να εξάγει δεδομένα από αυτά και να επικοινωνεί με ένα API. Παρέχει δύο κύριες λειτουργίες:
-1. **Εκτέλεση ως bot**: Παίρνει προτροπές από τον χρήστη και επιστρέφει απαντήσεις μέσω του API.
-2. **Εξαγωγή περιεχομένου**: Ελέγχει και εξάγει το περιεχόμενο από ένα αρχείο JSON.
-
+1. **Bot Mode**: Accepts user prompts and returns responses via an API.
+2. **Content Extraction**: Validates and extracts content from a JSON file.
 
 ---
 
-## Οδηγίες Εγκατάστασης
+## Installation Instructions
 
-1. **Μεταγλώττιση του Προγράμματος**
-   Χρησιμοποιήστε τον ακόλουθο κώδικα για τη μεταγλώττιση του προγράμματος:
+1. **Compile the Program**
    ```bash
    gcc -Wall -Wextra -Werror -pedantic -c neurolib.c
    gcc -Wall -Wextra -Werror -pedantic -c jason.c
    gcc -o jason neurolib.o jason.o -lssl -lcrypto
    ```
 
-2. **Τρέξιμο του Προγράμματος**
-   Το πρόγραμμα μπορεί να εκτελεστεί με τις ακόλουθες παραμέτρους:
-   - **Λειτουργία bot**: `./jason --bot`
-   - **Εξαγωγή JSON**: `./jason --extract <filename.json>`
+2. **Run the Program**
+   - **Bot Mode**: `./jason --bot`
+   - **Extract JSON Content**: `./jason --extract <filename.json>`
 
 ---
 
-## Περιγραφή Κώδικα
+## Code Description
 
-### 1. **Έλεγχος Επεκτάσεων JSON**
-Η συνάρτηση `has_json_extension` ελέγχει αν το όνομα του αρχείου έχει την κατάληξη `.json`.
+### 1. **Checking JSON Extensions**
+The function `has_json_extension` verifies if a filename ends with `.json`.
 ```c
 int has_json_extension(const char *filename) {
     const char *dot = strrchr(filename, '.');
@@ -41,42 +35,42 @@ int has_json_extension(const char *filename) {
 
 ---
 
-### 2. **Έλεγχος Εγκυρότητας JSON**
-Η συνάρτηση `is_valid_json` ελέγχει τη δομή του αρχείου JSON, βεβαιώνοντας ότι οι αγκύλες και τα εισαγωγικά είναι σωστά αντιστοιχισμένα.
+### 2. **JSON Structure Validation**
+The function `is_valid_json` checks the integrity of a JSON file, ensuring proper bracket and quotation matching.
 ```c
 int is_valid_json(const char *filename) {
-    // Λειτουργεί διαβάζοντας το αρχείο χαρακτήρα-χαρακτήρα
-    // και ελέγχει τις αγκύλες, εισαγωγικά και string literals.
+    // Reads the file character by character
+    // and checks brackets, quotes, and string literals.
 }
 ```
 
 ---
 
-### 3. **Εξαγωγή Περιεχομένου**
-Η `find_content_in_json` αναζητά τη λέξη-κλειδί `"content"` και επιστρέφει την τιμή της. Αν το περιεχόμενο είναι σε πολλές γραμμές, το συγκεντρώνει.
+### 3. **Extracting JSON Content**
+The `find_content_in_json` function searches for the key `"content"` and returns its value. If the content spans multiple lines, it consolidates them.
 ```c
 char *find_content_in_json(const char *filename) {
-    // Διαβάζει το αρχείο γραμμή προς γραμμή, εντοπίζει το "content"
-    // και επεξεργάζεται τις ακολουθίες διαφυγής (\n κ.λπ.).
+    // Reads the file line by line, locates "content"
+    // and processes escape sequences (\n, etc.).
 }
 ```
 
 ---
 
-### 4. **Λειτουργία Bot**
-Αν το πρόγραμμα εκτελεστεί με την παράμετρο `--bot`, περιμένει προτροπές από τον χρήστη και καλεί το API για απαντήσεις. Οι απαντήσεις αποθηκεύονται προσωρινά σε αρχείο και στη συνέχεια εξάγονται.
+### 4. **Bot Mode**
+When executed with `--bot`, the program waits for user prompts, queries the API, and returns responses. Answers are temporarily stored and retrieved.
 ```c
 if (strcmp(argv[1], "--bot") == 0) {
     while (1) {
-        // Λήψη προτροπής χρήστη, καλεί το API και επιστρέφει απάντηση.
+        // Receive user prompt, call API, and return response.
     }
 }
 ```
 
 ---
 
-### 5. **Λειτουργία Εξαγωγής**
-Με την παράμετρο `--extract`, ελέγχεται η εγκυρότητα του αρχείου JSON και εξάγεται το περιεχόμενο.
+### 5. **Extraction Mode**
+With `--extract`, the program validates the JSON file and extracts its content.
 ```c
 if (strcmp(argv[1], "--extract") == 0) {
     if (has_json_extension(argv[2])) {
@@ -92,25 +86,24 @@ if (strcmp(argv[1], "--extract") == 0) {
 
 ---
 
-## Παραδείγματα Χρήσης
+## Usage Examples
 
-### 1. Λειτουργία Bot
+### 1. Bot Mode
 ```bash
 ./jason --bot
 > What would you like to know? Hello, AI!
 ```
 
-### 2. Εξαγωγή Περιεχομένου JSON
+### 2. Extract JSON Content
 ```bash
 ./jason --extract example.json
 ```
 
 ---
 
-## Σημειώσεις
-- Οι ακολουθίες διαφυγής (`\n`, `\t`) μετατρέπονται σε πραγματικούς χαρακτήρες.
-- Χρησιμοποιήστε το `unlink()` για διαγραφή προσωρινών αρχείων μετά τη χρήση.
+## Notes
+- Escape sequences (`\n`, `\t`) are converted into actual characters.
+- Use `unlink()` to delete temporary files after use.
 
---- 
-=======
->>>>>>> f2c7bfb (update)
+---
+✅ **Efficient & Reliable JSON Processing**
