@@ -4,6 +4,12 @@
 
 This project is a modern take on the classic Snake game, developed using the **`raylib`** graphics library. The player controls a snake that grows by eating apples and must avoid obstacles such as eagles. The gameplay is simple, yet engaging, with responsive controls and smooth visual feedback.
 
+## Usage
+**Compile and Run the program:**  
+   ```sh
+   cd programs/game
+   make run //using the MakeFile
+   ```
 ## Key Features
 
 - **Modular Architecture**: Clear separation between game logic and graphical interface for maintainability and scalability.
