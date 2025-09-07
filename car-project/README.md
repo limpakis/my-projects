@@ -94,7 +94,7 @@ On **Streamlit Cloud**, secrets are managed in
 
 ## 📸 Example
 
-![Demo Screenshot](test_images/BMW.svg.png)
+![Demo Screenshot](/Users/sotirioslympakis/Desktop/demoscreenshot.png)
 
 ---
 
