@@ -1,4 +1,6 @@
-streamlit>=1.36
-pillow>=10.3
-google-generativeai>=0.7
-pydantic>=2.7
+streamlit
+google-generativeai
+pillow
+pydantic
+requests
+python-dotenv
