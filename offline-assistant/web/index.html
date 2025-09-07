@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Offline Assistant — Memory + RAG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root { --bg:#0b0c10; --panel:#16181d; --soft:#22252b; --text:#e6e6e6; --muted:#9aa0a6; --brand:#2a6ef1; }
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial; margin:24px; color:var(--text); background:var(--bg); max-width:900px}
+    h1{font-size:22px; margin:0 0 14px}
+    .toolbar{display:flex; gap:12px; flex-wrap:wrap; align-items:end; background:var(--panel); border:1px solid #2a2f36; padding:12px; border-radius:14px}
+    .field{display:flex; flex-direction:column; gap:6px}
+    .field label{font-size:12px; color:var(--muted)}
+    .field input[type="text"], .field input[type="number"]{
+      background:var(--soft); color:var(--text); border:1px solid #2a2f36;
+      border-radius:10px; padding:8px 10px; min-width:160px
+    }
+    .switch{display:flex; gap:8px; align-items:center; color:var(--muted); user-select:none}
+    .btn{background:var(--brand); color:white; border:0; padding:10px 14px; border-radius:10px; cursor:pointer}
+    .btn.secondary{background:var(--soft); color:var(--text); border:1px solid #2a2f36}
+    #chat{margin-top:14px; border:1px solid #2a2f36; border-radius:14px; height:480px; overflow:auto; background:var(--panel); padding:14px}
+    .msg{margin:8px 0; line-height:1.5}
+    .role{display:inline-block; font-size:12px; padding:2px 8px; border-radius:999px; margin-right:8px; vertical-align:baseline}
+    .user .role{background:#30363d; color:#e2e8f0}
+    .bot .role{background:#1f6feb; color:white}
+    .content{white-space:pre-wrap}
+    .composer{display:flex; gap:10px; margin-top:12px}
+    #q{flex:1; background:var(--panel); color:var(--text); border:1px solid #2a2f36; border-radius:12px; padding:12px 14px; height:100px}
+    #send{min-width:120px}
+    .hint{color:var(--muted); font-size:12px; margin-top:6px}
+  </style>
+</head>
+<body>
+  <h1>Offline Assistant</h1>
+
+  <div class="toolbar">
+    <div class="field">
+      <label>Model</label>
+      <input id="model" type="text" value="gemma3:1b" />
+    </div>
+
+    <div class="field">
+      <label>Temperature (0–2) — default 2.0</label>
+      <input id="temp" type="number" min="0" max="2" step="0.1" value="2" />
+    </div>
+
+    <div class="field">
+      <label>Max tokens</label>
+      <input id="maxTokens" type="number" min="32" max="4096" step="32" value="512" />
+    </div>
+
+    <label class="switch"><input id="useRag" type="checkbox" checked /> Use RAG</label>
+    <label class="switch"><input id="useStream" type="checkbox" /> Stream</label>
+
+    <button id="clear" class="btn secondary">Clear chat</button>
+    <button id="copy" class="btn secondary">Copy last answer</button>
+  </div>
+
+  <div id="chat"></div>
+
+  <div class="composer">
+    <textarea id="q" placeholder="Type… (tip: remember: the letter a)"></textarea>
+    <button id="send" class="btn">Send</button>
+  </div>
+  <div class="hint">Enter to send · Shift+Enter for newline · Settings persist locally</div>
+
+  <script>
+    const sid = crypto.randomUUID();
+    const chatEl = document.getElementById('chat');
+    const modelEl = document.getElementById('model');
+    const tempEl = document.getElementById('temp');
+    const tokensEl = document.getElementById('maxTokens');
+    const ragEl = document.getElementById('useRag');
+    const streamEl = document.getElementById('useStream');
+    const qEl = document.getElementById('q');
+    const sendEl = document.getElementById('send');
+
+    (function restore(){
+      try {
+        const s = JSON.parse(localStorage.getItem('offline-ui') || '{}');
+        if (s.model) modelEl.value = s.model;
+        if (s.temp != null) tempEl.value = s.temp;
+        if (s.maxTokens) tokensEl.value = s.maxTokens;
+        if (s.useRag != null) ragEl.checked = s.useRag;
+        if (s.useStream != null) streamEl.checked = s.useStream;
+      } catch {}
+    })();
+    function persist(){
+      localStorage.setItem('offline-ui', JSON.stringify({
+        model: modelEl.value,
+        temp: Number(tempEl.value),
+        maxTokens: Number(tokensEl.value),
+        useRag: ragEl.checked,
+        useStream: streamEl.checked,
+      }));
+    }
+
+    function push(role, text){
+      const wrap = document.createElement('div');
+      wrap.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+      wrap.innerHTML = `<span class="role">${role === 'user' ? 'You' : 'Assistant'}</span>` +
+                       `<span class="content"></span>`;
+      wrap.querySelector('.content').textContent = text;
+      chatEl.appendChild(wrap);
+      chatEl.scrollTop = chatEl.scrollHeight;
+      return wrap.querySelector('.content');
+    }
+    async function postJSON(url, data){
+      const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+      if (!r.ok) throw new Error((await r.text().catch(()=>'')) || `HTTP ${r.status}`);
+      return r.json();
+    }
+
+    async function sendOnce(){
+      const text = qEl.value.trim(); if (!text) return;
+      persist();
+      qEl.value = '';
+      push('user', text);
+      const out = push('assistant', '…');
+
+      const body = {
+        session_id: sid,
+        model: modelEl.value,
+        message: text,
+        use_rag: ragEl.checked,
+        temperature: Number(tempEl.value),
+        max_tokens: Number(tokensEl.value) || 512
+      };
+
+      if (streamEl.checked) {
+        try {
+          const r = await fetch('http://localhost:9000/chat_stream', {
+            method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+          });
+          if (r.ok && r.body) {
+            const reader = r.body.getReader(); const dec = new TextDecoder();
+            let acc = '';
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) break;
+              const chunk = dec.decode(value);
+              acc += chunk;
+              out.textContent = acc;
+              chatEl.scrollTop = chatEl.scrollHeight;
+            }
+            return;
+          }
+        } catch (e) {}
+      }
+
+      try {
+        const data = await postJSON('http://localhost:9000/chat', body);
+        out.textContent = data.answer || '(no answer)';
+      } catch (e) {
+        out.textContent = `Error: ${e.message}`;
+      } finally {
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
+    }
+
+    sendEl.onclick = sendOnce;
+    qEl.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendOnce();
+      }
+    });
+    document.getElementById('clear').onclick = ()=>{
+      chatEl.innerHTML = ''; qEl.value = ''; qEl.focus();
+    };
+    document.getElementById('copy').onclick = async ()=>{
+      const nodes = [...chatEl.querySelectorAll('.msg.bot .content')];
+      const last = nodes.at(-1);
+      if (!last) return;
+      await navigator.clipboard.writeText(last.textContent);
+    };
+    qEl.focus();
+  </script>
+</body>
+</html>

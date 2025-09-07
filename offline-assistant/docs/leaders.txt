@@ -1,0 +1,6 @@
+Country: Greece
+Prime Minister: Kyriakos Mitsotakis
+President: Katerina Sakellaropoulou
+
+Country: United Kingdom
+Prime Minister: Keir Starmer
