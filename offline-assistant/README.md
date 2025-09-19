@@ -39,7 +39,7 @@ offline-assistant/
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-username/offline-assistant.git
+git clone https://github.com/limpakis/offline-assistant.git
 cd offline-assistant
 
 # Create and activate venv
