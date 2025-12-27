@@ -424,8 +424,10 @@ with st.sidebar:
 
     # model selector
     model_choice = st.selectbox(
-        "Model", ["gemini-1.5-flash", "gemini-1.5-pro"], index=0,
-        help="Use 'pro' for harder images; 'flash' is cheaper/faster."
+        "Model", [
+            "gemini-2.0-flash-exp"
+        ], index=0,
+        help="Using the newest working Gemini model."
     )
     MODEL_NAME = model_choice  # always use the latest choice
 

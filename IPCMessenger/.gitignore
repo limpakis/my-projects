@@ -1,0 +1,39 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.dylib
+
+# Executables
+dialog_system
+cleanup
+
+# Debugging files
+*.dSYM/
+*.gdb_history
+vgcore.*
+core.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation generated files
+html/
+latex/
+
+# System files
+Thumbs.db
+*.log
+
+# Backup files
+*.bak
+*.tmp
+
+# Shared memory segments (cleanup artifacts)
+/dev/shm/sem.dialog_sem_lock

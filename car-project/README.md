@@ -2,7 +2,7 @@
 
 [![Streamlit App](https://img.shields.io/badge/Live%20Demo-Streamlit%20App-brightgreen?logo=streamlit)](https://carrecognitionproject.streamlit.app)
 
-Identify car **brands** from photos or logos using **Google’s Gemini multimodal LLM**.  
+Identify car **brands** from photos or logos using **Google's Gemini 2.0 Flash (Experimental) LLM**.  
 Upload an image → get the brand name, confidence score, and enriched details such as **headquarters, founding year, parent company, founders, country, website,** and a **Wikipedia summary** — all in a clean, interactive UI.
 
 ---
@@ -20,7 +20,7 @@ Upload an image → get the brand name, confidence score, and enriched details s
 ## 🧠 How It Works
 
 1. **Upload** a car logo or photo.  
-2. The app sends the image to **Gemini** with a structured JSON prompt.  
+2. The app sends the image to **Gemini 2.0 Flash Experimental** with a structured JSON prompt.  
 3. Gemini responds with a prediction, e.g.:  
    ```json
    {
@@ -38,7 +38,7 @@ Upload an image → get the brand name, confidence score, and enriched details s
 
 - **Python 3.11+**  
 - **Streamlit** → frontend & app framework  
-- **Google Gemini API** (`google-generativeai`)  
+- **Google Gemini 2.0 API** (`google-generativeai` - currently deprecated, transitioning to `google-genai`)  
 - **Pillow** → image handling  
 - **Pydantic** → model validation  
 - **Requests** → API calls (Wikidata, Wikipedia)  
@@ -70,8 +70,8 @@ car-brand-app/
 Clone and set up the project:
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>/car-brand-app
+git clone https://github.com/limpakis/my-projects.git
+cd my-projects/car-brand-app
 
 # Create & activate a virtual environment (macOS/Linux)
 python3 -m venv .venv
