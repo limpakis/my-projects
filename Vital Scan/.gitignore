@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.python-version
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files
+.env
+.streamlit/secrets.toml
+
+# Build and cache artifacts
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Local outputs
+models/*.pkl
