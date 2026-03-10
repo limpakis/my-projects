@@ -1,6 +1,6 @@
-# MediSynth AI
+# Vital Scan
 
-MediSynth AI is a small healthcare data project I built to bring a few different ideas into one place: synthetic patient data, a simple machine learning model, note summarization, and an interactive dashboard.
+Vital Scan is a small healthcare data project I built to bring a few different ideas into one place: synthetic patient data, a simple machine learning model, note summarization, and an interactive dashboard.
 
 The idea was to create something that feels close to a real triage workflow without using any real patient information. Everything in this project is synthetic, but the structure is similar to the kind of pipeline you would build for an analytics or decision-support tool.
 

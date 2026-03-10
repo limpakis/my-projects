@@ -1,6 +1,6 @@
 """
-MediSynth AI - Medical Notes Summarizer
-=======================================
+Vital Scan - Medical Notes Summarizer
+====================================
 Creates lightweight AI-style summaries for patient notes in demo mode.
 
 Usage:
@@ -28,7 +28,7 @@ load_dotenv(BASE_DIR / ".env")
 
 MONGO_URI = os.getenv("MONGO_URI")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-DATABASE_NAME = "medisynth_db"
+DATABASE_NAME = "vitalscan_db"
 COLLECTION_NAME = "patients"
 DEMO_LIMIT = 5
 
@@ -215,7 +215,7 @@ def save_results(df: pd.DataFrame) -> None:
 def main() -> None:
     """Run the summarization pipeline."""
     print("=" * 60)
-    print("MediSynth AI - Medical Summarizer")
+    print("Vital Scan - Medical Summarizer")
     print("=" * 60)
 
     initialize_ai_engine()

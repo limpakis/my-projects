@@ -1,6 +1,6 @@
 """
-MediSynth AI - Synthetic Patient Data Generator
-================================================
+Vital Scan - Synthetic Patient Data Generator
+=============================================
 Healthcare Triage System Training Data
 
 Installation Requirements:
@@ -209,7 +209,7 @@ def main():
     """Main execution function"""
     
     print("="*60)
-    print("MediSynth AI - Synthetic Patient Data Generator")
+    print("Vital Scan - Synthetic Patient Data Generator")
     print("="*60)
     print()
     

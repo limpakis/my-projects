@@ -1,6 +1,6 @@
 """
-MediSynth AI - MongoDB Upload Script
-====================================
+Vital Scan - MongoDB Upload Script
+==================================
 Uploads the synthetic patient dataset to MongoDB Atlas.
 
 Usage:
@@ -25,7 +25,7 @@ DATA_FILE = BASE_DIR / "data" / "patients_data.csv"
 load_dotenv(BASE_DIR / ".env")
 
 MONGO_URI = os.getenv("MONGO_URI")
-DATABASE_NAME = "medisynth_db"
+DATABASE_NAME = "vitalscan_db"
 COLLECTION_NAME = "patients"
 
 

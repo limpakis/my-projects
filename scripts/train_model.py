@@ -1,6 +1,6 @@
 """
-MediSynth AI - Machine Learning Model Training
-==============================================
+Vital Scan - Machine Learning Model Training
+============================================
 Trains a Random Forest classifier for patient risk prediction.
 
 Usage:
@@ -30,7 +30,7 @@ MODEL_FILE = BASE_DIR / "models" / "triage_model.pkl"
 load_dotenv(BASE_DIR / ".env")
 
 MONGO_URI = os.getenv("MONGO_URI")
-DATABASE_NAME = "medisynth_db"
+DATABASE_NAME = "vitalscan_db"
 COLLECTION_NAME = "patients"
 
 
@@ -152,7 +152,7 @@ def save_model(model) -> None:
 def main() -> None:
     """Run the full training pipeline."""
     print("=" * 60)
-    print("MediSynth AI - ML Model Training")
+    print("Vital Scan - ML Model Training")
     print("=" * 60)
 
     df = fetch_data()

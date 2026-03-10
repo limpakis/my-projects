@@ -1,5 +1,5 @@
 """
-VitalScan - Healthcare Triage Dashboard
+Vital Scan - Healthcare Triage Dashboard
 ===========================================
 Interactive Web Application for Patient Risk Assessment
 
@@ -30,14 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
 MONGO_URI = os.getenv("MONGO_URI")
-DATABASE_NAME = "medisynth_db"
+DATABASE_NAME = "vitalscan_db"
 COLLECTION_NAME = "patients"
 MODEL_PATH = BASE_DIR / "models" / "triage_model.pkl"
 DATA_PATH = BASE_DIR / "data" / "patients_data.csv"
 
 # Page configuration
 st.set_page_config(
-    page_title="VitalScan - Healthcare Triage",
+    page_title="Vital Scan - Healthcare Triage",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -130,7 +130,7 @@ def load_ml_model():
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">🏥 VitalScan</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">🏥 Vital Scan</h1>', unsafe_allow_html=True)
     st.markdown('<p style="text-align: center; font-size: 1.2rem; color: gray;">Healthcare Triage & Risk Assessment System</p>', unsafe_allow_html=True)
     st.markdown("---")
     
@@ -659,7 +659,7 @@ def main():
     st.markdown("---")
     st.markdown(
         '<p style="text-align: center; color: gray; font-size: 0.9rem;">'
-        '🏥 VitalScan - Healthcare Triage System | '
+        '🏥 Vital Scan - Healthcare Triage System | '
         f'Last Updated: {datetime.now().strftime("%Y-%m-%d %H:%M")} | '
         f'{len(df)} Total Patients'
         '</p>',

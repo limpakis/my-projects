@@ -1,4 +1,4 @@
-# MediSynth AI - Python Dependencies
+# Vital Scan - Python Dependencies
 
 # Core Data Science
 pandas>=2.0.0
